@@ -37,8 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'browse',
-    "data"
+    'browse'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -132,9 +131,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
-
-LOGIN_URL='/login/'
-LOGIN_REDIRECT_URL='/login/'
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/

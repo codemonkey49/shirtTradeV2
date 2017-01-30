@@ -1,0 +1,24 @@
+{%extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'browse/browse.css' %}">
+
+{% endblock %}
+
+<html>
+    {%block body%}
+        <img id="img" src={{ url }}>
+        <br>
+        signed in as: {{ user }}
+        
+        <p id=teamNum>from team number: {{teamNumber}}</p>
+       
+        
+    <form action="/profile" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="teamNum" />
+</form>
+    {%endblock%}
+</html>

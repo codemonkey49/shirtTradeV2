@@ -1,0 +1,34 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static "browse/base.css" %}"/>
+{% block styles %}
+{% endblock %}
+
+<html>
+<section>
+
+    <div class="Nav">{% block Nav %}
+        <li class="link"><a href={% url "browse:index" %}>home</a></li>
+        <li class="link"><a href={% url "browse:browse" %}>browse</a></li>
+        <li class="link"><a href= {% url "browse:profile" %}>profile</a></li>
+        <li class="link"><a href={% url "browse:messages" %}>messages</a></li>
+
+        <div id="login" class="login">{% block login %}
+     {%if user.is_authenticated%}
+         logged in as: <b>{{ user }}</b>   <a href={% url "logout" %}?next={% url 'browse:index' %} >(logout)</a>
+     {%else%}
+     <a href= {%url "login"%}?next={% url 'browse:profile' %} >login</a>
+     {%endif%}
+     {%endblock%}</div>
+    {% endblock %}</div>
+
+    <br>
+    <br>
+
+
+    <div id="body" class="body">{%block body%}<h1>
+        body
+        </h1>{%endblock%}</div>
+
+
+</section>
+</html>

@@ -1,0 +1,41 @@
+{%extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'browse/detail.css' %}">
+
+{% endblock %}
+<html>
+
+{%block body%}
+        <br>
+        <br>
+    You are speaking with: {{ post.user }}<br>
+    from team: {{ post.team }}<br>
+    The shirts they are interested in are: {{ post.wanted }}<br>
+    <img id="img" src={{ post.shirtImg }}>
+
+
+
+    <div id="messenger" class="messenger">
+    {%for i in mergedMessages%}
+    {%if user == i.sentBy %}
+    <div id="sent" class="sent">
+            {{i.content}}<br>
+    </div>
+    {%else%}
+    <div id="recieved" class="recieved">
+            {{i.content}}<br>
+    </div>
+    {%endif%}
+    {%endfor%}
+    
+    <form action="" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="send" />
+</form>
+
+    </div>
+    {%endblock%}
+</html>

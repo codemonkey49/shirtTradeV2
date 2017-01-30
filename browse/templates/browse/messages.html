@@ -1,0 +1,16 @@
+{%extends 'base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'browse/message.css' %}">
+
+{% endblock %}
+
+{%block body%}
+    <h1>Your active conversations:</h1>
+{%for i in activeMessages%}
+    <ul id="MesLink">
+        <li class="Mes"><a href= {% url "browse:detail" userName=i %}>{{ i }}</a></li>
+    </ul>
+{%endfor%}
+{%endblock%}

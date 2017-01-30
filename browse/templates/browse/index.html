@@ -1,0 +1,23 @@
+{%extends 'base.html' %}
+{% load staticfiles %}
+<html>
+    {%block body%}
+        <link rel="stylesheet" href="{% static 'browse/index.css' %}">
+        {% if user.is_anonymous%}
+        ayy lmao
+        {%else%}
+        <h1>matched trades:</h1>
+        {%for i in trades%}
+
+        <h2>{{ i.user }}, from team: {{ i.team }}</h2>
+
+        <a id="img" href={% url "browse:detail" userName=i.user %}>
+            <img src={{ i.shirtImg }}>
+        </a>
+
+        {%endfor%}
+        {%endif%}
+    
+    
+    {%endblock%}
+</html>
