@@ -14,12 +14,16 @@ def index(request):
     context["user"]=request.user
     if  not request.user.is_anonymous():
         priorityTrades=[]
-        wanted=UserProfile.objects.filter(user=request.user)[0].wanted
-        for i in wanted.split(","):
-            i=int(i)
-            teamMems=UserProfile.objects.filter(team=i,post=True).exclude(shirtCount=0)
-            if len(teamMems)>0:
-                priorityTrades.append(teamMems[0])
+        User=UserProfile.objects.filter(user=request.user)[0]
+        if User.wanted.exists():
+            wanted=UserProfile.objects.filter(user=request.user)[0].wanted
+            for i in wanted.split(","):
+                i=int(i)
+                teamMems=UserProfile.objects.filter(team=i,post=True).exclude(shirtCount=0)
+                if len(teamMems)>0:
+                    priorityTrades.append(teamMems[0])
+        else:
+            priorityTrades=[]
                     
         context["trades"]=priorityTrades
     return render(request,template,context)
