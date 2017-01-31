@@ -12,18 +12,17 @@ def index(request):
     template="browse/index.html"
     context={}
     context["user"]=request.user
-    if  not request.user.is_anonymous():
+    if  not request.user.is_anonymous():#display seperate if not logged in
         priorityTrades=[]
-        User=UserProfile.objects.filter(user=request.user)[0]
-        if User.wanted.exists():
-            wanted=UserProfile.objects.filter(user=request.user)[0].wanted
+        UserObj=UserProfile.objects.filter(user=request.user)[0]
+        
+        if UserObj.wanted !="":#errors if User has not input any wanted shirts
+            wanted=UserObj.wanted
             for i in wanted.split(","):
                 i=int(i)
                 teamMems=UserProfile.objects.filter(team=i,post=True).exclude(shirtCount=0)
                 if len(teamMems)>0:
                     priorityTrades.append(teamMems[0])
-        else:
-            priorityTrades=[]
                     
         context["trades"]=priorityTrades
     return render(request,template,context)
@@ -36,27 +35,31 @@ def profile(request):
                 team=form.cleaned_data["team"]
                 wanted=form.cleaned_data["wanted"]
                 shirtImg=form.cleaned_data["shirtImg"]
-                try:
+                post=form.cleaned_data["post"]
+                try:#update existing user object
                     a=UserProfile.objects.get(user=request.user)
                     a.team=team
                     a.wanted=wanted
                     a.shirtImg=shirtImg
-                    #a.shirtURL=url
+                    a.post=post
                     a.save()
-                except:
-                    #a=UserProfile(user=request.user,team=team,shirtURL=url)
+                except:#create new user object
+                    a=UserProfile(user=request.user,team=team,shirtImg=shirtImg,post=post)
                     a.save()
                 return redirect('/profile')
     else:
-        a=UserProfile.objects.filter(user=request.user)[0]
-        form = teamNumForm(instance=a)
+        try:
+            a=UserProfile.objects.filter(user=request.user)[0]
+            form = teamNumForm(instance=a)
+        except:
+            form=teamNumForm()
         
     template="browse/profile.html"
     context={}
     context["user"]=request.user
     context["form"]=form
-    context["teamNumber"]=(UserProfile.objects.get(user=request.user)).team
-    context["url"]=(UserProfile.objects.get(user=request.user)).shirtImg
+    #context["teamNumber"]=(UserProfile.objects.get(user=request.user)).team
+    #context["url"]=(UserProfile.objects.get(user=request.user)).shirtImg
     return render(request,template,context)
 @login_required
 
@@ -68,7 +71,7 @@ def browse(request):
         form = browseForm(request.POST)
         if form.is_valid():
             searchTerm = form.cleaned_data["search"]
-            sortBy = form.cleaned_data["sortBy"]
+            #sortBy = form.cleaned_data["sortBy"]
     else:
         form = browseForm()
     context["form"] = form
@@ -92,7 +95,7 @@ def detail(request,userName):
                 lastSent=message.objects.filter(sentBy=request.user,sentTo=selected).order_by("-order")
                 lastRecieved=message.objects.filter(sentTo=request.user,sentBy=selected).order_by("-order")
                 if (len(lastSent)==0 and len(lastRecieved)==0):
-                    nextDrder=0
+                    nextOrder=0
                 elif len(lastSent)==0:
                     nextOrder=lastRecieved[0].order+1
                 elif len(lastRecieved)==0:
@@ -102,7 +105,7 @@ def detail(request,userName):
                         nextOrder=lastSent[0].order+1
                     else:
                         nextOrder=lastRecieved[0].order+1
-                
+                        
                 a=message(sentBy=request.user,sentTo=selected,content=content,order=nextOrder)
                 a.save()
                 return redirect('/detail/%s'% selected.username)

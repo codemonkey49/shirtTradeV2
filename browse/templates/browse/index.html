@@ -4,8 +4,13 @@
     {%block body%}
         <link rel="stylesheet" href="{% static 'browse/index.css' %}">
         {% if user.is_anonymous%}
-        ayy lmao
+        <h1>Welcome to Shirt Trader!</h1>
+        <p>This website is made to facilitate the trading of shirts at robotics competitions.
+        Click the login link at the top right and register to create an account. enter your team 
+        number, any teams you are specifically interested in, and a picture of your team's shirt 
+        to begin. </p>
         {%else%}
+        {% if trades%}
         <h1>matched trades:</h1>
         {%for i in trades%}
 
@@ -16,6 +21,10 @@
         </a>
 
         {%endfor%}
+        {% else%}
+        <p>You have no matched trades. Remember to add any teams you are interested in 
+        to your profile, then they will appear here if anyone from that team creates a posting.</p>
+        {%endif%}
         {%endif%}
     
     

@@ -10,7 +10,7 @@ class UserProfile(models.Model):
     shirtCount=models.IntegerField(blank=True,null=True)
     shirtImg=models.CharField(max_length=1000,blank=True,null=True)
     wanted=models.CommaSeparatedIntegerField(max_length=200,blank=True,null=True)
-    post=models.BooleanField()
+    post=models.BooleanField(default=False)
 class message(models.Model):
     sentBy=models.ForeignKey(User,related_name="messageFrom")
     sentTo=models.ForeignKey(User,related_name="messageTo")

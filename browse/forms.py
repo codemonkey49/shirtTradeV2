@@ -21,4 +21,4 @@ class browseForm(forms.Form):
         (1, ("number")),
         (2, ("date")),
     )
-    sortBy = forms.ChoiceField(choices=SortOptions)
+    #sortBy = forms.ChoiceField(choices=SortOptions)
