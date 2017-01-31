@@ -14,8 +14,10 @@ def index(request):
     context["user"]=request.user
     if  not request.user.is_anonymous():#display seperate if not logged in
         priorityTrades=[]
-        UserObj=UserProfile.objects.filter(user=request.user)[0]
-        
+        try:
+            UserObj=UserProfile.objects.filter(user=request.user)[0]
+        except:
+            return redirect('/profile')
         if UserObj.wanted !="":#errors if User has not input any wanted shirts
             wanted=UserObj.wanted
             for i in wanted.split(","):
