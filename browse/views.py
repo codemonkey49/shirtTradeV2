@@ -18,13 +18,15 @@ def index(request):
             UserObj=UserProfile.objects.filter(user=request.user)[0]
         except:
             return redirect('/profile')
-        if UserObj.wanted !="":#errors if User has not input any wanted shirts
+        try:
             wanted=UserObj.wanted
             for i in wanted.split(","):
                 i=int(i)
                 teamMems=UserProfile.objects.filter(team=i,post=True).exclude(shirtCount=0)
                 if len(teamMems)>0:
                     priorityTrades.append(teamMems[0])
+        except:
+            priorityTrades=[]
                     
         context["trades"]=priorityTrades
     return render(request,template,context)
