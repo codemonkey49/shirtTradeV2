@@ -7,10 +7,14 @@
 {% endblock %}
 
 {%block body%}
+{%if activeMessages%}
     <h1>Your active conversations:</h1>
 {%for i in activeMessages%}
     <ul id="MesLink">
         <li class="Mes"><a href= {% url "browse:detail" userName=i %}>{{ i }}</a></li>
     </ul>
 {%endfor%}
+{%else%}
+<p>You have no active conversations. Click on a shirt picture to begin messaging someone.</p>
+{%endif%}
 {%endblock%}

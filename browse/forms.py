@@ -8,16 +8,16 @@ class teamNumForm(forms.ModelForm):
     #shirt_url = forms.CharField(max_length=400)
     class Meta:
        model = UserProfile
-       fields = ["team","wanted","shirtImg","post"] # list of fields you want from model
+       fields = ["team","wanted","post"] # list of fields you want from model
        #exclude=["user"]
        labels = {
-            'wanted': ('teams you are interested in:'),
-            'shirtImg': ('link to shirt image:'),
+            'wanted': ('teams you are interested in:')
+            #'shirtImg': ('link to shirt image:'),
 
         }
        help_texts = {
            "team": "Your team number",
-            'shirtImg': 'put a direct link to an image of your shirt here',
+            #'shirtImg': 'put a direct link to an image of your shirt here',
             "wanted": "put a list of team numbers, formatted like so: 100,200,300"
         }
        

@@ -4,11 +4,12 @@ from django.contrib.auth.models import User
 
 from django.contrib.auth.decorators import login_required
 
-from data.models import UserProfile,message
+from data.models import UserProfile,message,shirtImage,teamProfile
 from .forms import teamNumForm, messageForm, browseForm
 # Create your views here.
 #@login_required
 def index(request):
+    a=shirtImage(team=1984,shirtImg="bleh",year=2015)
     template="browse/index.html"
     context={}
     context["user"]=request.user
