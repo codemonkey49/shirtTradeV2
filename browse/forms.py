@@ -1,6 +1,12 @@
 from django import forms
-from data.models import UserProfile,message
+from data.models import UserProfile,message,shirtImage
 
+
+class teamProfileForm(forms.ModelForm):
+    
+    class Meta:
+        model=shirtImage
+        fields = ["year","shirtImg"]
 
 
 class teamNumForm(forms.ModelForm):
@@ -8,7 +14,7 @@ class teamNumForm(forms.ModelForm):
     #shirt_url = forms.CharField(max_length=400)
     class Meta:
        model = UserProfile
-       fields = ["team","wanted","post"] # list of fields you want from model
+       fields = ["team","wanted","shirtImg","post"] # list of fields you want from model
        #exclude=["user"]
        labels = {
             'wanted': ('teams you are interested in:')

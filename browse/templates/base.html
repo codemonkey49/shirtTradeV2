@@ -9,8 +9,10 @@
     <div class="Nav">{% block Nav %}
         <li class="link"><a href={% url "browse:index" %}>home</a></li>
         <li class="link"><a href={% url "browse:browse" %}>browse</a></li>
-        <li class="link"><a href= {% url "browse:profile" %}>profile</a></li>
         <li class="link"><a href={% url "browse:messages" %}>messages</a></li>
+        <li class="link"><a href= {% url "browse:profile" %}>profile</a></li>
+        <li class="link"><a href= {% url "browse:teamProfile" %}>team profile</a></li>
+
 
         <div id="login" class="login">{% block login %}
      {%if user.is_authenticated%}

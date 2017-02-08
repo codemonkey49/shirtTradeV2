@@ -16,7 +16,7 @@
 
     {% for i in items %}
         <a id="img" href={% url "browse:detail" userName=i.user %}>
-            <img src={{ i.shirtImg }}>
+            <img src={{ i.shirtImg.shirtImg }}>
         </a>
     {% endfor %}
 {% endblock %}

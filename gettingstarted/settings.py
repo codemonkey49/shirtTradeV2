@@ -141,3 +141,4 @@ LOGIN_REDIRECT_URL='/login/'
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
+APPEND_SLASH=False

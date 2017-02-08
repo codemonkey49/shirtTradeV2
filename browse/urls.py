@@ -7,4 +7,7 @@ urlpatterns = [
     url(r"browse",browse,name="browse"),
     url(r"detail/(?P<userName>.*)/",detail,name="detail"),
     url(r"messages/",messages,name="messages"),
+    url(r"teamProfile/$",teamProfileView,name="teamProfile"),
+    url(r"teamProfile/edit/(?P<shirtID>\d+)",editShirtView,name="editShirt"),
+
     ]

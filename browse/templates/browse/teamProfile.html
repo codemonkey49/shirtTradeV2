@@ -1,0 +1,19 @@
+{%extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'browse/profile.css' %}">
+
+{% endblock %}
+{% block body%}<br><br>
+<h1>your team's shirts:</h1>
+<p>click on an image to edit the shirt</p>
+{%for i in shirts%}
+    <a id="img" href={% url "browse:editShirt" shirtID=i.pk %}>
+            <img src={{ i.shirtImg }}>
+        </a>
+
+{%endfor%}
+{% endblock%}

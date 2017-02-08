@@ -1,0 +1,21 @@
+{%extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{%block body%}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'browse/editShirt.css' %}">
+
+{% endblock %}
+
+            <img src={{ shirt.shirtImg }}>
+            
+<div class="teamProfileForm">
+        <form action="/teamProfile/edit/1" method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" value="submit" />
+        </form>
+    </div>
+
+{%endblock%}

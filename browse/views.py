@@ -3,13 +3,13 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 
 from data.models import UserProfile,message,shirtImage,teamProfile
-from .forms import teamNumForm, messageForm, browseForm
+from .forms import teamNumForm, messageForm, browseForm, teamProfileForm
 # Create your views here.
 #@login_required
 def index(request):
-    a=shirtImage(team=1984,shirtImg="bleh",year=2015)
     template="browse/index.html"
     context={}
     context["user"]=request.user
@@ -63,11 +63,13 @@ def profile(request):
     context={}
     context["user"]=request.user
     context["form"]=form
-    #context["teamNumber"]=(UserProfile.objects.get(user=request.user)).team
-    #context["url"]=(UserProfile.objects.get(user=request.user)).shirtImg
+    try:
+        context["url"]=(UserProfile.objects.get(user=request.user)).shirtImg.shirtImg
+    except ObjectDoesNotExist:
+        context["url"]=""
     return render(request,template,context)
-@login_required
 
+@login_required
 def browse(request):
     template = "browse/browse.html"
     context={}
@@ -156,4 +158,37 @@ def messages(request):
         if i.sentBy not in activeMessages:
             activeMessages.append(i.sentBy)
     context["activeMessages"]=activeMessages
+    return render(request,template,context)
+    
+@login_required
+def teamProfileView(request):
+    template="browse/teamProfile.html"
+    context={}
+    try:
+        user=UserProfile.objects.get(user=request.user)
+        shirts=shirtImage.objects.filter(team=user.team)
+    except ObjectDoesNotExist:
+        shirts=[]
+    context["shirts"]=shirts
+ 
+    return render(request,template,context)
+
+@login_required    
+def editShirtView(request,shirtID):
+    template="browse/editShirt.html"
+    context={}
+    if request.method=="POST":
+        form=teamProfileForm(request.POST)
+        if form.is_valid():
+            shirtImg=form.cleaned_data["shirtImg"]
+            year=form.cleaned_data["year"]
+            userProfile=UserProfile.objects.filter(user=request.user)[0]
+            team=userProfile.team
+            a=shirtImage(addedBy=userProfile,team=team,year=year,shirtImg=shirtImg)
+            a.save()
+    else:
+        shirt=shirtImage.objects.get(pk=shirtID)
+        form=teamProfileForm(instance=shirt)
+        context["shirt"]=shirt
+    context["form"]=form            
     return render(request,template,context)

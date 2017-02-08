@@ -2,7 +2,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block styles %}
-    <link rel="stylesheet" href="{% static 'browse/browse.css' %}">
+    <link rel="stylesheet" href="{% static 'browse/profile.css' %}">
 
 {% endblock %}
 
@@ -14,11 +14,12 @@
         
         <p id=teamNum>from team number: {{teamNumber}}</p>
        
-        
-    <form action="/profile" method="post">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <input type="submit" value="submit" />
-</form>
+    <div class="personalForm">
+        <form action="/profile" method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" value="submit" />
+        </form>
+    </div>
     {%endblock%}
 </html>
