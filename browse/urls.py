@@ -9,5 +9,7 @@ urlpatterns = [
     url(r"messages/",messages,name="messages"),
     url(r"teamProfile/$",teamProfileView,name="teamProfile"),
     url(r"teamProfile/edit/(?P<shirtID>\d+)",editShirtView,name="editShirt"),
+    url(r"teamProfile/createShirt",createShirtView,name="createShirt"),
+
 
     ]

@@ -10,6 +10,11 @@
 {% block body%}<br><br>
 <h1>your team's shirts:</h1>
 <p>click on an image to edit the shirt</p>
+<a id="img" href={% url "browse:createShirt" %}>
+        create new shirt
+        </a>
+        <br>
+        <br>
 {%for i in shirts%}
     <a id="img" href={% url "browse:editShirt" shirtID=i.pk %}>
             <img src={{ i.shirtImg }}>

@@ -11,7 +11,7 @@
             <img src={{ shirt.shirtImg }}>
             
 <div class="teamProfileForm">
-        <form action="{% url 'browse:editShirt' shirtID=shirt.pk %}" method="post">
+        <form action="{% url 'browse:createShirt'%}" method="post">
             {% csrf_token %}
             {{ form|crispy }}
             <input type="submit" value="submit" />

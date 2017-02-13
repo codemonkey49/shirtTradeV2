@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
 
 from data.models import UserProfile,message,shirtImage,teamProfile
 from .forms import teamNumForm, messageForm, browseForm, teamProfileForm
@@ -65,7 +66,7 @@ def profile(request):
     context["form"]=form
     try:
         context["url"]=(UserProfile.objects.get(user=request.user)).shirtImg.shirtImg
-    except ObjectDoesNotExist:
+    except:
         context["url"]=""
     return render(request,template,context)
 
@@ -180,6 +181,34 @@ def editShirtView(request,shirtID):
     if request.method=="POST":
         form=teamProfileForm(request.POST)
         if form.is_valid():
+            #issue: new item is always created, not overwritten. fuccck
+            shirtImg=form.cleaned_data["shirtImg"]
+            year=form.cleaned_data["year"]
+            userProfile=UserProfile.objects.filter(user=request.user)[0]
+            team=userProfile.team
+            
+            a=shirtImage.objects.get(pk=shirtID)
+            a.shirtImg=shirtImg
+            a.year=year
+            a.addedBy=userProfile
+            a.team=team
+            a.save()
+            context["shirt"]=a
+    else:
+        shirt=shirtImage.objects.get(pk=shirtID)
+        form=teamProfileForm(instance=shirt)
+        context["shirt"]=shirt
+
+    context["form"]=form            
+    return render(request,template,context)
+    
+def createShirtView(request):
+    template="browse/createShirt.html"
+    context={}
+    if request.method=="POST":
+        form=teamProfileForm(request.POST)
+        if form.is_valid():
+            #issue: new item is always created, not overwritten. fuccck
             shirtImg=form.cleaned_data["shirtImg"]
             year=form.cleaned_data["year"]
             userProfile=UserProfile.objects.filter(user=request.user)[0]
@@ -187,8 +216,8 @@ def editShirtView(request,shirtID):
             a=shirtImage(addedBy=userProfile,team=team,year=year,shirtImg=shirtImg)
             a.save()
     else:
-        shirt=shirtImage.objects.get(pk=shirtID)
-        form=teamProfileForm(instance=shirt)
-        context["shirt"]=shirt
-    context["form"]=form            
+        #shirt=shirtImage.objects.get(pk=shirtID)
+        form=teamProfileForm()#instance=shirt)
+    context["form"]=form
+    
     return render(request,template,context)

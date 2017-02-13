@@ -24,9 +24,9 @@ class shirtImage(models.Model):
         
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
-    team = models.ForeignKey(teamProfile,blank=True,null=True)
+    team = models.ForeignKey(teamProfile, models.SET_NULL,blank=True,null=True)
     shirtCount=models.IntegerField(blank=True,null=True)
-    shirtImg=models.ForeignKey(shirtImage,blank=True,null=True)
+    shirtImg=models.ForeignKey(shirtImage, models.SET_NULL,blank=True,null=True)
     wanted=models.CommaSeparatedIntegerField(max_length=200,blank=True,null=True)
     post=models.BooleanField(default=True)
     
