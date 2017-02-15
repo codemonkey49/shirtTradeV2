@@ -35,13 +35,25 @@ def index(request):
 
 @login_required
 def profile(request):
+    template="browse/profile.html"
+    context={}
+    try:
+        userProfile=UserProfile.objects.filter(user=request.user)[0]
+        team=userProfile.team
+    except:
+        team=None
     if request.method == 'POST':
-            form = teamNumForm(request.POST)
+            form = teamNumForm(request.POST,user=userProfile)
             if form.is_valid():
                 team=form.cleaned_data["team"]
                 wanted=form.cleaned_data["wanted"]
-                shirtImg=form.cleaned_data["shirtImg"]
+                shirtImg=form.cleaned_data["shirtChoice"]
                 post=form.cleaned_data["post"]
+                try:#create new team object if necessary
+                    team=teamProfile.objects.filter(team=team)[0]
+                except:
+                    team=teamProfile(team=team)
+                    team.save()
                 try:#update existing user object
                     a=UserProfile.objects.get(user=request.user)
                     a.team=team
@@ -54,14 +66,14 @@ def profile(request):
                     a.save()
                 return redirect('/profile')
     else:
-        try:
+        try:#load your previous profile data
             a=UserProfile.objects.filter(user=request.user)[0]
-            form = teamNumForm(instance=a)
-        except:
-            form=teamNumForm()
+            form = teamNumForm(instance=a,user=userProfile)
+            context["team"]=team
+        except:#no previous profile data
+            form=teamNumForm(user=userProfile)
         
-    template="browse/profile.html"
-    context={}
+    
     context["user"]=request.user
     context["form"]=form
     try:
@@ -180,14 +192,15 @@ def editShirtView(request,shirtID):
     context={}
     shirt=shirtImage.objects.get(pk=shirtID)
     context["shirt"]=shirt
+    
+    userProfile=UserProfile.objects.filter(user=request.user)[0]
+    team=userProfile.team
 
     if request.method=="POST":
         form=teamProfileForm(request.POST)
         if form.is_valid():
             shirtImg=form.cleaned_data["shirtImg"]
             year=form.cleaned_data["year"]
-            userProfile=UserProfile.objects.filter(user=request.user)[0]
-            team=userProfile.team
             
             
             a=shirtImage.objects.get(pk=shirtID)
