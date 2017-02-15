@@ -178,28 +178,34 @@ def teamProfileView(request):
 def editShirtView(request,shirtID):
     template="browse/editShirt.html"
     context={}
+    shirt=shirtImage.objects.get(pk=shirtID)
+    context["shirt"]=shirt
+
     if request.method=="POST":
         form=teamProfileForm(request.POST)
         if form.is_valid():
-            #issue: new item is always created, not overwritten. fuccck
             shirtImg=form.cleaned_data["shirtImg"]
             year=form.cleaned_data["year"]
             userProfile=UserProfile.objects.filter(user=request.user)[0]
             team=userProfile.team
             
+            
             a=shirtImage.objects.get(pk=shirtID)
-            a.shirtImg=shirtImg
-            a.year=year
-            a.addedBy=userProfile
-            a.team=team
-            a.save()
+            if form.cleaned_data["delete"]:
+                a.delete()
+                return redirect("/teamProfile/")
+            else:
+                a.shirtImg=shirtImg
+                a.year=year
+                a.addedBy=userProfile
+                a.team=team
+                a.save()
             context["shirt"]=a
+                
     else:
-        shirt=shirtImage.objects.get(pk=shirtID)
         form=teamProfileForm(instance=shirt)
-        context["shirt"]=shirt
-
-    context["form"]=form            
+        
+    context["form"]=form
     return render(request,template,context)
     
 def createShirtView(request):
@@ -208,7 +214,6 @@ def createShirtView(request):
     if request.method=="POST":
         form=teamProfileForm(request.POST)
         if form.is_valid():
-            #issue: new item is always created, not overwritten. fuccck
             shirtImg=form.cleaned_data["shirtImg"]
             year=form.cleaned_data["year"]
             userProfile=UserProfile.objects.filter(user=request.user)[0]

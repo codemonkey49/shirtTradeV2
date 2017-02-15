@@ -3,7 +3,7 @@ from data.models import UserProfile,message,shirtImage
 
 
 class teamProfileForm(forms.ModelForm):
-    
+    delete = forms.BooleanField(initial=False,required=False)
     class Meta:
         model=shirtImage
         fields = ["year","shirtImg"]
