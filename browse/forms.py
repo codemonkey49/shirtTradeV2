@@ -7,6 +7,12 @@ class teamProfileForm(forms.ModelForm):
     class Meta:
         model=shirtImage
         fields = ["year","shirtImg"]
+    def __init__(self, *args, **kwargs):
+        super(teamProfileForm, self).__init__(*args, **kwargs)
+
+        self.fields["year"].required = True 
+        self.fields["shirtImg"].required = True 
+
     
 
 

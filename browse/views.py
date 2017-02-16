@@ -233,6 +233,7 @@ def createShirtView(request):
             team=userProfile.team
             a=shirtImage(addedBy=userProfile,team=team,year=year,shirtImg=shirtImg)
             a.save()
+            return redirect("/teamProfile/edit/"+str(a.pk))
     else:
         #shirt=shirtImage.objects.get(pk=shirtID)
         form=teamProfileForm()#instance=shirt)
