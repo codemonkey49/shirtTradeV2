@@ -24,7 +24,8 @@ def index(request):
             wanted=UserObj.wanted
             for i in wanted.split(","):
                 i=int(i)
-                teamMems=UserProfile.objects.filter(team=i,post=True).exclude(shirtCount=0)
+                team=teamProfile.objects.filter(team=i)[0]
+                teamMems=UserProfile.objects.filter(team=team,post=True).exclude(shirtCount=0)
                 if len(teamMems)>0:
                     priorityTrades.append(teamMems[0])
         except:
@@ -220,7 +221,8 @@ def editShirtView(request,shirtID):
         
     context["form"]=form
     return render(request,template,context)
-    
+
+@login_required    
 def createShirtView(request):
     template="browse/createShirt.html"
     context={}
