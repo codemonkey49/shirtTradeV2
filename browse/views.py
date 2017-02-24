@@ -72,7 +72,9 @@ def profile(request):
             form = teamNumForm(instance=a,user=userProfile)
             context["team"]=team
         except:#no previous profile data
-            form=teamNumForm(user=userProfile)
+            a=UserProfile(user=request.user)
+            a.save()
+            form=teamNumForm(user=a)
         
     
     context["user"]=request.user
@@ -178,6 +180,8 @@ def messages(request):
 def teamProfileView(request):
     template="browse/teamProfile.html"
     context={}
+    userProf=UserProfile.objects.filter(user=request.user)[0]
+    context["profile"]=userProf
     try:
         user=UserProfile.objects.get(user=request.user)
         shirts=shirtImage.objects.filter(team=user.team)

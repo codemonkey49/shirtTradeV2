@@ -8,6 +8,7 @@
 
 {% endblock %}
 {% block body%}<br><br>
+{%if profile.team != None%}
 <h1>your team's shirts:</h1>
 <p>click on an image to edit the shirt</p>
 <a id="img" href={% url "browse:createShirt" %}>
@@ -21,4 +22,8 @@
         </a>
 
 {%endfor%}
+{%else%}
+You do not have a team set in your profile. Add your team number to view your team's shirts.
+{%endif%}
+
 {% endblock%}
